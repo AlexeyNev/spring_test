@@ -2,11 +2,16 @@ package org.example;
 
 import org.springframework.context.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @Configuration
-//@ComponentScan("org.example.springcourse")
 @PropertySource("classpath:musicPlayer.properties")
 public class SpringConfig {
+
     @Bean
+    @Scope("prototype")
     public ClassicalMusic classicalMusic() {
         return new ClassicalMusic();
     }
@@ -17,8 +22,18 @@ public class SpringConfig {
     }
 
     @Bean
+    public HouseMusic houseMusic() {
+        return new HouseMusic();
+    }
+
+    @Bean
+    public List<Music> musicList() {
+        return Arrays.asList(classicalMusic(),rockMusic(), houseMusic());
+    }
+
+    @Bean
     public MusicPlayer musicPlayer() {
-        return new MusicPlayer(rockMusic(), classicalMusic());
+        return new MusicPlayer(musicList());
     }
 
     @Bean
